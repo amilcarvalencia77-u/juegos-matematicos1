@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Juego Matemático</title>
+
+<style>
+body {
+    font-family: Arial;
+    text-align: center;
+    background: linear-gradient(135deg, #a0e7e5, #b4f8c8, #fbe7c6);
+    transition: background 0.3s;
+}
+
+h1 {
+    font-size: 40px;
+}
+
+/* BOTONES */
+button {
+    padding: 10px 18px;
+    margin: 8px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+/* PANEL */
+#panel {
+    font-size: 18px;
+    margin: 10px;
+}
+
+/* EJERCICIO */
+#ejercicio {
+    font-size: 30px;
+    margin-top: 20px;
+}
+
+input {
+    font-size: 20px;
+    width: 80px;
+    text-align: center;
+}
+
+/* EFECTOS */
+@keyframes rojoFlash {
+    0% { background: red; }
+    50% { background: darkred; }
+    100% { background: red; }
+}
+
+.error {
+    animation: rojoFlash 0.3s 4;
+}
+
+.bien {
+    background: lightgreen !important;
+}
+
+/* PERSONAJE */
+#personaje {
+    font-size: 50px;
+}
+
+/* VOLVER */
+.volver {
+    margin-top: 20px;
+    display: inline-block;
+    text-decoration: none;
+    background: blue;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1 id="titulo"></h1>
+
+<div id="panel">
+Puntos: <span id="puntos">0</span> |
+Tiempo: <span id="tiempo">30</span>s |
+⭐ Estrellas: <span id="estrellas">0</span>
+</div>
+
+<div id="personaje">🙂</div>
+
+<div id="ejercicio"></div>
+
+<a href="index.html" class="volver">⬅ Volver</a>
+
+<!-- SONIDOS -->
+<audio id="ok" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
+<audio id="fail" src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
+
+<script>
+let respuesta = 0;
+let puntos = 0;
+let tiempo = 30;
+let intervalo;
+let modo = "";
+let max = 20;
+
+/* OBTENER MODO DESDE URL */
+const params = new URLSearchParams(window.location.search);
+modo = params.get("modo");
+
+document.getElementById("titulo").textContent =
+    modo === "suma" ? "➕ Juego de SUMA" : "➖ Juego de RESTA";
+
+/* INICIAR */
+intervalo = setInterval(contarTiempo, 1000);
+generar();
+
+/* TIEMPO */
+function contarTiempo() {
+    tiempo--;
+    document.getElementById("tiempo").textContent = tiempo;
+
+    if (tiempo <= 0) {
+        clearInterval(intervalo);
+        let estrellas = Math.floor(puntos / 3);
+        document.getElementById("estrellas").textContent = estrellas;
+
+        document.getElementById("ejercicio").innerHTML =
+            "⏰ Fin del juego<br>Puntaje: " + puntos;
+    }
+}
+
+/* GENERAR */
+function generar() {
+    let a = Math.floor(Math.random() * max);
+    let b = Math.floor(Math.random() * max);
+
+    if (modo === "suma") {
+        respuesta = a + b;
+        document.getElementById("ejercicio").innerHTML =
+            `${a} + ${b} = <input id="r">
+            <button onclick="verificar()">OK</button>`;
+    } else {
+        if (b > a) [a, b] = [b, a];
+        respuesta = a - b;
+        document.getElementById("ejercicio").innerHTML =
+            `${a} - ${b} = <input id="r">
+            <button onclick="verificar()">OK</button>`;
+    }
+}
+
+/* VERIFICAR */
+function verificar() {
+    let r = parseInt(document.getElementById("r").value);
+
+    if (r === respuesta) {
+        puntos++;
+        document.getElementById("puntos").textContent = puntos;
+        document.getElementById("personaje").textContent = "😄";
+
+        document.body.classList.add("bien");
+        document.getElementById("ok").play();
+
+        setTimeout(() => {
+            document.body.classList.remove("bien");
+            generar();
+        }, 500);
+
+    } else {
+        document.getElementById("personaje").textContent = "😢";
+
+        document.body.classList.add("error");
+        document.getElementById("fail").play();
+
+        setTimeout(() => {
+            document.body.classList.remove("error");
+        }, 1000);
+    }
+}
+</script>
+
+</body>
+</html>
