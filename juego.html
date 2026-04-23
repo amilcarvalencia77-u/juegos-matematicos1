@@ -11,10 +11,10 @@ body {
     background-image: url("https://http2.mlstatic.com/D_639519-CBT73264435354_122023-C.jpg");
     background-size: cover;
     background-position: center;
-     transition: background 0.3s;
-}
+    transition: background 0.3s;
 }
 
+/* TITULO */
 h1 {
     font-size: 40px;
 }
@@ -61,6 +61,12 @@ input {
     background: lightgreen !important;
 }
 
+/* MENSAJE */
+#mensaje {
+    font-size: 30px;
+    margin-top: 10px;
+}
+
 /* PERSONAJE */
 #personaje {
     font-size: 50px;
@@ -90,12 +96,12 @@ Tiempo: <span id="tiempo">30</span>s |
 </div>
 
 <div id="personaje">🙂</div>
+<div id="mensaje"></div>
 
 <div id="ejercicio"></div>
 
 <a href="index.html" class="volver">⬅ Volver</a>
 
-<!-- SONIDOS -->
 <audio id="ok" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
 <audio id="fail" src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
 
@@ -107,7 +113,7 @@ let intervalo;
 let modo = "";
 let max = 20;
 
-/* OBTENER MODO DESDE URL */
+/* MODO */
 const params = new URLSearchParams(window.location.search);
 modo = params.get("modo");
 
@@ -135,6 +141,8 @@ function contarTiempo() {
 
 /* GENERAR */
 function generar() {
+    document.getElementById("mensaje").textContent = "";
+
     let a = Math.floor(Math.random() * max);
     let b = Math.floor(Math.random() * max);
 
@@ -158,13 +166,12 @@ function verificar() {
 
     if (r === respuesta) {
         puntos++;
+        tiempo += 3; // 🔥 SUMA 3 SEGUNDOS
         document.getElementById("puntos").textContent = puntos;
-
-        // 🔥 REINICIAR EL TIEMPO
-        tiempo = 30;
         document.getElementById("tiempo").textContent = tiempo;
 
         document.getElementById("personaje").textContent = "😄";
+        document.getElementById("mensaje").textContent = "✔ Correcto";
 
         document.body.classList.add("bien");
         document.getElementById("ok").play();
@@ -172,10 +179,11 @@ function verificar() {
         setTimeout(() => {
             document.body.classList.remove("bien");
             generar();
-        }, 500);
+        }, 700);
 
     } else {
         document.getElementById("personaje").textContent = "😢";
+        document.getElementById("mensaje").textContent = "❌ Incorrecto";
 
         document.body.classList.add("error");
         document.getElementById("fail").play();
