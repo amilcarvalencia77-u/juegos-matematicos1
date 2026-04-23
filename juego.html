@@ -166,31 +166,34 @@ function verificar() {
 
     if (r === respuesta) {
         puntos++;
-        tiempo += 3; // 🔥 SUMA 3 SEGUNDOS
+        tiempo += 3;
+
         document.getElementById("puntos").textContent = puntos;
         document.getElementById("tiempo").textContent = tiempo;
 
         document.getElementById("personaje").textContent = "😄";
-        document.getElementById("mensaje").textContent = "✔ Correcto";
 
-        document.body.classList.add("bien");
+        // ✔ GRANDE
+        document.getElementById("mensaje").textContent = "✔";
+
         document.getElementById("ok").play();
 
         setTimeout(() => {
-            document.body.classList.remove("bien");
+            document.getElementById("mensaje").textContent = "";
             generar();
         }, 700);
 
     } else {
         document.getElementById("personaje").textContent = "😢";
-        document.getElementById("mensaje").textContent = "❌ Incorrecto";
 
-        document.body.classList.add("error");
+        // ❌ GRANDE
+        document.getElementById("mensaje").textContent = "❌";
+
         document.getElementById("fail").play();
 
         setTimeout(() => {
-            document.body.classList.remove("error");
-        }, 1000);
+            document.getElementById("mensaje").textContent = "";
+        }, 700);
     }
 }
 </script>
