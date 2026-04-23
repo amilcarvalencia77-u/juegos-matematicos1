@@ -52,19 +52,19 @@ input {
     50% { background: darkred; }
     100% { background: red; }
 }
-
-.error {
-    animation: rojoFlash 0.3s 4;
-}
-
 .bien {
     background: lightgreen !important;
 }
 
-/* MENSAJE */
+/* MENSAJE GRANDE CENTRO */
 #mensaje {
-    font-size: 30px;
-    margin-top: 10px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 120px;
+    font-weight: bold;
+    pointer-events: none;
 }
 
 /* PERSONAJE */
