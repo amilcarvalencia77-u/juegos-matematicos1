@@ -159,6 +159,11 @@ function verificar() {
     if (r === respuesta) {
         puntos++;
         document.getElementById("puntos").textContent = puntos;
+
+        // 🔥 REINICIAR EL TIEMPO
+        tiempo = 30;
+        document.getElementById("tiempo").textContent = tiempo;
+
         document.getElementById("personaje").textContent = "😄";
 
         document.body.classList.add("bien");
